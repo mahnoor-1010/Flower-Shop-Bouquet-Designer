@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 void mainMenu(){
-  cout << "hello";
+  cout << "hello" << endl;
 }
 int main(){
 
