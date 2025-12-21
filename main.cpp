@@ -18,6 +18,14 @@ void create_bouquet();
 void update_flowers();
 string generate_order_id();
 void vieworders();
+void floristMenu();
+void createbouquetmenu();
+bool check_admin_login();
+void adminmenu();
+void resetfile();
+void check_florist_login();
+void update_stock();
+void update_price();
 
 int flowerID[50];
 string flowerName[50];
@@ -37,6 +45,13 @@ int optionCustomer;
 int optioncreateabouquet;
 int optionviewbouquet;
 int optionplaceorder;
+int optionFlorist;
+int optionAdmin;
+char delete_reset;
+int account_option;
+char customer_option;
+char admin_option;
+char florist_option;
 
 int main(){
 
@@ -88,9 +103,144 @@ int main(){
       mainMenu();
     }
     else if(optionMain == 2){
+      bool loginSuccess = check_florist_login();
+      if(loginSuccess){
+        while(true){
+          if(optionFlorist == 1){
+            update_stock();
+            floristMenu();
+          }
+          if(optionFlorist==2){
+            update_price();
+            floristMenu();
+          }
+          if(optionFlorist == 3){
+            vieworders();
+            floristMenu();
 
+          }
+          if(optionFlorist ==4){
+            low_stock();
+            floristMenu();
+          }
+          if(optionFlorist ==5 ){
+            ofstream outfile;
+            outfile.open("floristlogin.txt",ios::out);
+            string new_florist_username;
+            cout<<"Enter new username: ";
+            cin>>new_florist_username;
+            outfile<<new_florist_username<<endl; 
+            string new_florist_password; 
+            cout<<"Enter new password: ";
+            cin>>new_florist_password; 
+            outfile<<new_florist_password; 
+            outfile.close();
+            cout<<endl; 
+            cout<<"Florist profile updated!";
+            cout<<endl; 
+            break; 
+          }
+        }
+}
     }
     else if(optionMain == 3){
+      bool loginSuccess = check_admin_login();
+      if(loginSuccess){
+        while(true){
+          if(optionAdmin == 1){
+            vieworders(); 
+            adminMenu();
+          }
+          else if(optionAdmin == 2){
+            cout<<"Do you want to delete/reset order history? (Y/N)";
+            cin>>delete_rest; 
+            if(delete_reset == 'Y'){
+              reset_file();
+            }
+            adminMenu();
+          }
+          else if(optionAdmin == 3){
+            cout<<"1.Customer"<<endl;
+            cout<<"2.Admin"<<endl;
+            cout<<"3.Florist"<<endl; 
+            cout<<"Select an account to manage: "<<endl;
+            cin>> account_option;
+            if(account_option == 1){
+              cout<<"Would you like to change login info for customer? (Y/N):";
+              cin>>customer_option; 
+              if(customer_option == 'Y' ){
+                ofstream outfile; 
+                outfile.open("customerlogin.txt",ios::out);
+                string new_customer_username; 
+                cout<<"Enter new customer username: ";
+                cin>>new_customer_username; 
+                outfile<< new_customer_username << endl; 
+                string new_customer_password;
+                cout<<"Enter new customer password: ";
+                cin>>new_customer_password; 
+                outfile<<new_customer_password; 
+                outfile.close();
+                cout<<endl;
+
+
+              }
+              adminMenu();
+            }
+            else if(account_option == 2){
+              cout<<"Would you like to change login info for Admin? (Y/N):";
+              cin>>admin_option; 
+              if(admin_option == 'Y'){
+                ofstream outfile;
+                outfile.open("adminlogin.txt",ios::out);
+                string new_admin_username; 
+                cout<<"Enter new admin username: ";
+                cin>> new_admin_username;
+                outfile<<new_admin_username<<endl;
+                string new_admin_password;
+                cout<<"Enter new admin password: ";
+                cin>>new_admin_password; 
+                outfile<<new_admin_password<<endl;
+                outfile.close();
+                cout<<endl;
+                cout<<"Admin profile update!"<<endl;  
+
+
+              }
+              adminMenu();
+
+            }
+            else if(account_option == 3){
+              cout<<"Would you like to change login info for Florist? (Y/N):";
+              if(florist_option == 'Y'){
+                ofstream outfile;
+                outfile.open("floristlogin.txt",ios::out);
+                string new_florist_username; 
+                cout<<"Enter new florist username: ";
+                cin>> new_florist_username; 
+                outfile<< new_florist_username;
+                cout<<endl; 
+                string new_florist_password; 
+                cout<<"Enter new florist password: ";
+                cin>>new_florist_password; 
+                outfile<<new_florist_password; 
+                outfile.close();
+                cout<<endl; 
+
+              }
+              adminMenu();
+
+            }
+
+
+          }    
+          else if(optionAdmin==4){
+            cout<<endl<<"Logged out!"<<endl;
+            break; 
+          }
+        
+        }
+      }
+      mainMenu();
 
     }
     else if(optionMain == 4){
@@ -392,4 +542,235 @@ void vieworders(){
     cout << s << endl;
   }
   ordersfile.close();
+}
+bool check_admin_login(){
+  ifstream adminloginfile;
+  adminloginfile.open("adminlogin.txt",ios::in);
+  string admin_username;
+  getline(adminloginfile,admin_username);
+  string admin_password; 
+  getline(adminloginfile,admin_password);
+  string admin_user_username;
+  string admin_user_password;
+  cout<<endl; 
+  cout<<"Please enter username for admin login: ";
+  cin>>admin_user_username;
+  cout << "Please enter password for admin login: ";
+  cin >> admin_user_password;
+
+  if(admin_user_username == admin_username && admin_user_password == admin_password){
+    cout<<endl; 
+    cout<<"Successfully logged in as admin!"<<endl; 
+    adminMenu();
+    return true; 
+  }
+  else{
+    cout<<endl<<"Incorrect username or password!"<<endl;
+    return false; 
+  }
+}
+bool check_florist_login(){
+  ifstream floristloginfile;
+  floristloginfile.open("floristlogin.txt", ios::in);
+  string florist_username;
+  getline(floristloginfile,florist_username);
+  string florist_password;
+  getline(floristloginfile, florist_password);
+  string florist_user_username; 
+  string florist_user_password; 
+  cout<<"Please enter username for florist login: ";
+  cin>>florist_user_username; 
+  cout<<"Please enter password for florsit login: ";
+  cin>>florist_user_password; 
+  if(florist_user_username == florist_username && florist_user_password == florist_password){
+    cout << endl;
+    cout << "Successfully logged in as florist!" << endl;
+    floristMenu();
+    return true;
+  }
+  else{
+    cout << endl << "Incorrect username or password!" << endl;
+    return false;
+  }
+}
+
+void update_stock(){
+  flowerCount = 0;
+  ifstream flowersfile;
+  flowersfile.open("flowers.txt", ios::in);
+  while(flowersfile >> flowerID[flowerCount]){
+    flowersfile.ignore();
+    getline(flowersfile, flowerName[flowerCount], ',');
+    flowersfile >> flowerPrice[flowerCount];
+    flowersfile.ignore();
+    flowersfile >> flowerStock[flowerCount];
+    flowerCount++;
+  }
+  flowersfile.close();
+
+  cout << endl;
+  cout << "=== UPDATE FLOWER STOCK ===" << endl;
+  cout << "Current Inventory:" << endl;
+  cout << "ID - Name - Price - Stock" << endl;
+  for(int i = 0; i< flowerCount; i++){
+    cout << flowerID[i] << " - " << flowerName[i] << " - Rs." << flowerPrice[i] << " - " << flowerStock[i] << endl;
+  }
+
+  int id;
+  cout << endl << "Enter Flower ID to update stock: ";
+  while(!(cin >> id)){
+    cout << "Invalid input. Please enter a valid Flower ID: ";
+    cin.clear();
+    cin.ignore(10000, '\n');
+  }
+
+  int index = get_inventory_index_by_id(id);
+  if(index == -1){
+    cout << "Error: Flower ID" << id << " not found!" << endl;
+    return;
+  }
+  
+  int new_stock;
+  cout << "Current stock for " << flowerName[index] << ": " << flowerStock[index] << endl;
+  cout << "Enter new stock amount: ";
+  while(!(cin>>new_stock) || new_stock < 0){
+    cout << "Invalid input. Please enter a valid stock amount (0 or greater): ";
+    cin.clear();
+    cin.ignore(10000, '\n');
+  }
+
+  flowerStock[index] = new_stock;
+  cout << "Stock updated successfully!" << endl;
+  cout << flowerName[index] << " now has " << flowerStock[index] << " in stock." << endl;
+  update_flowers();
+}
+
+void low_stock(){
+    flowerCount = 0;
+    ifstream flowersfile("flowers.txt");
+    if(!flowersfile){
+        cout << "Error opening flowers file!" << endl;
+        return;
+    }
+    while(flowersfile >> flowerID[flowerCount]){
+        flowersfile.ignore();
+        getline(flowersfile, flowerName[flowerCount], ',');
+        flowersfile >> flowerPrice[flowerCount];
+        flowersfile.ignore();
+        flowersfile >> flowerStock[flowerCount];
+        flowerCount++;
+    }
+    flowersfile.close();
+    
+    bool no_low_stock = true;
+    for(int i = 0; i < flowerCount; i++){
+        if(flowerStock[i] < 15){
+            no_low_stock = false;
+            break;
+        }
+    }
+    cout << endl;
+    if(no_low_stock){
+        cout << "All flowers are in stock!" << endl;
+    } 
+    else{
+        cout << "=== LOW STOCK ALERTS ===" << endl;
+        for(int i = 0; i < flowerCount; i++){
+            if(flowerStock[i] < 15){
+                cout << "Only " << flowerStock[i] << " " << flowerName[i] << " left!" << endl;
+            }
+        }
+    }
+}
+
+void floristMenu(){
+    cout << endl;
+    cout << "1. Update Flower Stock" << endl;
+    cout << "2. Update Flower Prices" << endl;
+    cout << "3. View Orders" << endl;
+    cout << "4. Low Stock Alerts" << endl;
+    cout << "5. Update Profile" << endl;
+    cout << "6. Logout" << endl;
+    cout << "Select an option: ";
+    while(!(cin >> optionFlorist) || optionFlorist < 1 || optionFlorist > 6){
+        cout << "Invalid input. Please enter a number between 1-6: ";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
+}
+
+void reset_file(){
+    ofstream file;
+    file.open("orders.txt", ios::out);
+    file.close();
+    cout << "File resetted successfully!" << endl;
+}
+
+void adminMenu(){
+    cout << endl; 
+    cout << "=== ADMIN MENU ===" << endl; 
+    cout << "1. View all orders" << endl; 
+    cout << "2. Delete or Reset order history" << endl; 
+    cout << "3. Manage user accounts" << endl; 
+    cout << "4. Exit Admin menu" << endl; 
+    cout << "Enter your choice: ";
+    while(!(cin >> optionAdmin) || optionAdmin < 1 || optionAdmin > 4){
+        cout << "Invalid input. Please enter a number between 1-4: ";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
+}
+
+void update_price(){
+    flowerCount = 0;
+    ifstream flowersfile("flowers.txt");
+    if(!flowersfile){
+        cout << "Error opening flowers file!" << endl;
+        return;
+    }
+    while(flowersfile >> flowerID[flowerCount]){
+        flowersfile.ignore();
+        getline(flowersfile, flowerName[flowerCount], ',');
+        flowersfile >> flowerPrice[flowerCount];
+        flowersfile.ignore();
+        flowersfile >> flowerStock[flowerCount];
+        flowerCount++;
+    }
+    flowersfile.close();
+    
+    cout << endl;
+    cout << "=== UPDATE FLOWER PRICES ===" << endl;
+    cout << "Current Inventory:" << endl;
+    cout << "ID - Name - Price - Stock" << endl;
+    for(int i = 0; i < flowerCount; i++){
+        cout << flowerID[i] << " - " << flowerName[i] << " - Rs. " << flowerPrice[i] << " - " << flowerStock[i] << endl;
+    }
+    
+    int id;
+    cout << endl << "Enter Flower ID to update price: ";
+    while(!(cin >> id)){
+        cout << "Invalid input. Please enter a valid Flower ID: ";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
+    
+    int index = get_inventory_index_by_id(id);
+    if(index == -1){
+        cout << "Error: Flower ID " << id << " not found!" << endl;
+        return;
+    }
+    
+    int new_price;
+    cout << "Current price for " << flowerName[index] << ": Rs. " << flowerPrice[index] << endl;
+    cout << "Enter new price: ";
+    while(!(cin >> new_price) || new_price < 0){
+        cout << "Invalid input. Please enter a valid price (0 or greater): ";
+        cin.clear();
+        cin.ignore(10000, '\n');
+    }
+    
+    flowerPrice[index] = new_price;
+    cout << "Price updated successfully!" << endl;
+    cout << flowerName[index] << " now costs Rs. " << flowerPrice[index] << endl;
+    update_flowers();
 }
