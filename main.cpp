@@ -21,11 +21,12 @@ void vieworders();
 void floristMenu();
 void createbouquetmenu();
 bool check_admin_login();
-void adminmenu();
-void resetfile();
-void check_florist_login();
+void adminMenu();
+void reset_file();
+bool check_florist_login();
 void update_stock();
 void update_price();
+void low_stock();
 
 int flowerID[50];
 string flowerName[50];
@@ -153,7 +154,7 @@ int main(){
           }
           else if(optionAdmin == 2){
             cout<<"Do you want to delete/reset order history? (Y/N)";
-            cin>>delete_rest; 
+            cin>> delete_reset; 
             if(delete_reset == 'Y'){
               reset_file();
             }
