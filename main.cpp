@@ -52,9 +52,6 @@ int optionFlorist;
 int optionAdmin;
 char delete_reset;
 int account_option;
-char customer_option;
-char admin_option;
-char florist_option;
 
 int main(){
 
@@ -132,7 +129,7 @@ mainMenu();
             vieworders(); 
           }
           else if(optionAdmin == 2){
-            cout<<"Do you want to delete/reset order history? (Y/N)";
+            cout<<"Do you want to delete/reset order history? (Y/N): ";
             cin>> delete_reset; 
             if(delete_reset == 'Y'){
               reset_file();
@@ -145,28 +142,17 @@ mainMenu();
             cout<<"Select an account to manage: "<<endl;
             cin>> account_option;
             if(account_option == 1){
-              cout<<"Would you like to change login info for customer? (Y/N):";
-              cin>>customer_option; 
-              if(customer_option == 'Y' ){
-               customer_update_login();
-              }
+              customer_update_login();
               adminMenu();
             }
             else if(account_option == 2){
-              cout<<"Would you like to change login info for Admin? (Y/N):";
-              cin>>admin_option; 
-              if(admin_option == 'Y'){
-                admin_update_login(); 
-
-              }
+              admin_update_login(); 
               adminMenu();
 
             }
             else if(account_option == 3){
-              cout<<"Would you like to change login info for Florist? (Y/N):";
-              if(florist_option == 'Y'){
-                florist_update_login();
-              }
+
+              florist_update_login();
               adminMenu();
 
             }
@@ -517,7 +503,7 @@ void update_flowers(){
   ofstream flowersfile;
   flowersfile.open("flowers.txt", ios::out);
   for(int i = 0; i < flowerCount; i++){
-    flowersfile << flowerID[i] << "," << flowerName[i] << "," << flowerPrice[i] << "," << flowerStock[i];
+    flowersfile << flowerID[i] << ", " << flowerName[i] << ", " << flowerPrice[i] << ", " << flowerStock[i];
     if(i < flowerCount - 1){
       flowersfile << endl;
     }
