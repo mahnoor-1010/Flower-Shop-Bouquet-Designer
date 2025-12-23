@@ -1,3 +1,3 @@
-101, Red Rose,700,64
-102, Lavender,600,3
-103, Sunflower,650,76
+101, Red Rose,700, 100
+102, Lavender,600, 100
+103, Sunflower,650, 100

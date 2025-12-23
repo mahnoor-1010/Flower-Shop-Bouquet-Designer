@@ -27,6 +27,9 @@ bool check_florist_login();
 void update_stock();
 void update_price();
 void low_stock();
+void customer_update_login();
+void admin_update_login();
+void florist_update_login();
 
 int flowerID[50];
 string flowerName[50];
@@ -65,6 +68,7 @@ int main(){
       bool loginSuccess = check_customer_login();
       if(loginSuccess){
         while(true){
+          customerMenu();
           if(optionCustomer == 1){
             cout << endl;
             cout << "=== Bouquet Maker ===" << endl << endl;
@@ -72,28 +76,13 @@ int main(){
             cin >> bouquetName;
             available_flowers();
             create_bouquet();
-            customerMenu();
           }
           else if(optionCustomer == 2){
             vieworders();
-            customerMenu();
           }
           else if(optionCustomer == 3){
-            ofstream outfile;
-            outfile.open("customerlogin.txt", ios::out);
-            string new_customer_username;
-            cout << "Enter new username";
-            cin >> new_customer_username;
-            outfile << new_customer_username << endl;
-            string new_customer_password;
-            cout << "Enter new password: ";
-            cin >> new_customer_password;
-            outfile << new_customer_password;
-            outfile.close();
-            cout << endl;
-            cout << "Customer profile updated!";
-            cout << endl;
-            customerMenu();
+
+            customer_update_login();
           }
           else if(optionCustomer == 4){
             cout << endl << "Logged out!" << endl;
@@ -107,50 +96,41 @@ int main(){
       bool loginSuccess = check_florist_login();
       if(loginSuccess){
         while(true){
+          floristMenu();
           if(optionFlorist == 1){
             update_stock();
-            floristMenu();
           }
           if(optionFlorist==2){
             update_price();
-            floristMenu();
+            
           }
           if(optionFlorist == 3){
             vieworders();
-            floristMenu();
+            
 
           }
           if(optionFlorist ==4){
             low_stock();
-            floristMenu();
+            
           }
           if(optionFlorist ==5 ){
-            ofstream outfile;
-            outfile.open("floristlogin.txt",ios::out);
-            string new_florist_username;
-            cout<<"Enter new username: ";
-            cin>>new_florist_username;
-            outfile<<new_florist_username<<endl; 
-            string new_florist_password; 
-            cout<<"Enter new password: ";
-            cin>>new_florist_password; 
-            outfile<<new_florist_password; 
-            outfile.close();
-            cout<<endl; 
-            cout<<"Florist profile updated!";
-            cout<<endl; 
-            break; 
+            florist_update_login();
+          }
+          if(optionFlorist == 6){
+            cout << endl << "Logged out!" << endl;
+            break;
           }
         }
 }
+mainMenu();
     }
     else if(optionMain == 3){
       bool loginSuccess = check_admin_login();
       if(loginSuccess){
         while(true){
+          adminMenu();
           if(optionAdmin == 1){
             vieworders(); 
-            adminMenu();
           }
           else if(optionAdmin == 2){
             cout<<"Do you want to delete/reset order history? (Y/N)";
@@ -158,7 +138,6 @@ int main(){
             if(delete_reset == 'Y'){
               reset_file();
             }
-            adminMenu();
           }
           else if(optionAdmin == 3){
             cout<<"1.Customer"<<endl;
@@ -170,20 +149,7 @@ int main(){
               cout<<"Would you like to change login info for customer? (Y/N):";
               cin>>customer_option; 
               if(customer_option == 'Y' ){
-                ofstream outfile; 
-                outfile.open("customerlogin.txt",ios::out);
-                string new_customer_username; 
-                cout<<"Enter new customer username: ";
-                cin>>new_customer_username; 
-                outfile<< new_customer_username << endl; 
-                string new_customer_password;
-                cout<<"Enter new customer password: ";
-                cin>>new_customer_password; 
-                outfile<<new_customer_password; 
-                outfile.close();
-                cout<<endl;
-
-
+               customer_update_login();
               }
               adminMenu();
             }
@@ -191,20 +157,7 @@ int main(){
               cout<<"Would you like to change login info for Admin? (Y/N):";
               cin>>admin_option; 
               if(admin_option == 'Y'){
-                ofstream outfile;
-                outfile.open("adminlogin.txt",ios::out);
-                string new_admin_username; 
-                cout<<"Enter new admin username: ";
-                cin>> new_admin_username;
-                outfile<<new_admin_username<<endl;
-                string new_admin_password;
-                cout<<"Enter new admin password: ";
-                cin>>new_admin_password; 
-                outfile<<new_admin_password<<endl;
-                outfile.close();
-                cout<<endl;
-                cout<<"Admin profile update!"<<endl;  
-
+                admin_update_login(); 
 
               }
               adminMenu();
@@ -213,20 +166,7 @@ int main(){
             else if(account_option == 3){
               cout<<"Would you like to change login info for Florist? (Y/N):";
               if(florist_option == 'Y'){
-                ofstream outfile;
-                outfile.open("floristlogin.txt",ios::out);
-                string new_florist_username; 
-                cout<<"Enter new florist username: ";
-                cin>> new_florist_username; 
-                outfile<< new_florist_username;
-                cout<<endl; 
-                string new_florist_password; 
-                cout<<"Enter new florist password: ";
-                cin>>new_florist_password; 
-                outfile<<new_florist_password; 
-                outfile.close();
-                cout<<endl; 
-
+                florist_update_login();
               }
               adminMenu();
 
@@ -300,6 +240,57 @@ void createabouquetMenu(){
   }
 }
 
+void customer_update_login(){
+            ofstream outfile;
+            outfile.open("customerlogin.txt", ios::out);
+            string new_customer_username;
+            cout << "Enter new username";
+            cin >> new_customer_username;
+            outfile << new_customer_username << endl;
+            string new_customer_password;
+            cout << "Enter new password: ";
+            cin >> new_customer_password;
+            outfile << new_customer_password;
+            outfile.close();
+            cout << endl;
+            cout << "Customer profile updated!";
+            cout << endl;
+}
+
+void admin_update_login(){
+            ofstream outfile;
+            outfile.open("adminlogin.txt", ios::out);
+            string new_admin_username;
+            cout << "Enter new username";
+            cin >> new_admin_username;
+            outfile << new_admin_username << endl;
+            string new_admin_password;
+            cout << "Enter new password: ";
+            cin >> new_admin_password;
+            outfile << new_admin_password;
+            outfile.close();
+            cout << endl;
+            cout << "Admin profile updated!";
+            cout << endl;
+}
+
+void florist_update_login(){
+            ofstream outfile;
+            outfile.open("floristlogin.txt", ios::out);
+            string new_florist_username;
+            cout << "Enter new username";
+            cin >> new_florist_username;
+            outfile << new_florist_username << endl;
+            string new_florist_password;
+            cout << "Enter new password: ";
+            cin >> new_florist_password;
+            outfile << new_florist_password;
+            outfile.close();
+            cout << endl;
+            cout << "Florist profile updated!";
+            cout << endl;
+}
+
 bool check_customer_login(){
   ifstream customerloginfile;
   customerloginfile.open("customerlogin.txt", ios::in);
@@ -307,6 +298,7 @@ bool check_customer_login(){
   getline(customerloginfile, customer_username);
   string customer_password;
   getline(customerloginfile, customer_password);
+  customerloginfile.close();
   string customer_user_username;
   string customer_user_password;
   cout << endl;
@@ -317,7 +309,6 @@ bool check_customer_login(){
   if(customer_user_username == customer_username && customer_user_password == customer_password){
     cout << endl;
     cout << "Successfully logged in as customer!" << endl;
-    customerMenu();
     return true;
   }
   else{
@@ -387,7 +378,7 @@ void available_flowers(){
   cout << "Avaiable Flowers:" << endl;
   cout << "Flower ID - Flower Name - Flower Price - Flower Stock" << endl;
   for(int i = 0; i < flowerCount; i++){
-    cout << "  " << flowerID[i] << " - " << flowerName[i] << " - Rs." << flowerPrice[i] << "   -   " << flowerStock[i] << endl;
+    cout << "  " << flowerID[i] << "     -  " << flowerName[i] << "  -     Rs." << flowerPrice[i] << "   -     " << flowerStock[i] << endl;
   }
 }
 
@@ -545,52 +536,55 @@ void vieworders(){
   ordersfile.close();
 }
 bool check_admin_login(){
-  ifstream adminloginfile;
-  adminloginfile.open("adminlogin.txt",ios::in);
+  
+   ifstream adminloginfile;
+  adminloginfile.open("adminlogin.txt", ios::in);
   string admin_username;
-  getline(adminloginfile,admin_username);
-  string admin_password; 
-  getline(adminloginfile,admin_password);
+  getline(adminloginfile, admin_username);
+  string admin_password;
+  getline(adminloginfile, admin_password);
+  adminloginfile.close();
   string admin_user_username;
   string admin_user_password;
-  cout<<endl; 
-  cout<<"Please enter username for admin login: ";
-  cin>>admin_user_username;
+  cout << endl;
+  cout << "Please enter username for admin login: ";
+  cin >> admin_user_username;
   cout << "Please enter password for admin login: ";
   cin >> admin_user_password;
-
   if(admin_user_username == admin_username && admin_user_password == admin_password){
-    cout<<endl; 
-    cout<<"Successfully logged in as admin!"<<endl; 
-    adminMenu();
-    return true; 
-  }
-  else{
-    cout<<endl<<"Incorrect username or password!"<<endl;
-    return false; 
-  }
-}
-bool check_florist_login(){
-  ifstream floristloginfile;
-  floristloginfile.open("floristlogin.txt", ios::in);
-  string florist_username;
-  getline(floristloginfile,florist_username);
-  string florist_password;
-  getline(floristloginfile, florist_password);
-  string florist_user_username; 
-  string florist_user_password; 
-  cout<<"Please enter username for florist login: ";
-  cin>>florist_user_username; 
-  cout<<"Please enter password for florsit login: ";
-  cin>>florist_user_password; 
-  if(florist_user_username == florist_username && florist_user_password == florist_password){
     cout << endl;
-    cout << "Successfully logged in as florist!" << endl;
-    floristMenu();
+    cout << "Successfully logged in as admin!" << endl;
     return true;
   }
   else{
-    cout << endl << "Incorrect username or password!" << endl;
+    cout << endl;
+    cout << "Incorrect username or password!" << endl;
+    return false;
+  }
+}
+bool check_florist_login(){
+ifstream floristloginfile;
+  floristloginfile.open("floristlogin.txt", ios::in);
+  string florist_username;
+  getline(floristloginfile, florist_username);
+  string florist_password;
+  getline(floristloginfile, florist_password);
+  floristloginfile.close();
+  string florist_user_username;
+  string florist_user_password;
+  cout << endl;
+  cout << "Please enter username for florist login: ";
+  cin >> florist_user_username;
+  cout << "Please enter password for florist login: ";
+  cin >> florist_user_password;
+  if(florist_user_username == florist_username && florist_user_password == florist_password){
+    cout << endl;
+    cout << "Successfully logged in as florist!" << endl;
+    return true;
+  }
+  else{
+    cout << endl;
+    cout << "Incorrect username or password!" << endl;
     return false;
   }
 }
